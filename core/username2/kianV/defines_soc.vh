@@ -1,0 +1,26 @@
+/*
+ *  kianv harris multicycle RISC-V rv32im
+ *
+ *  copyright (c) 2023 hirosh dabui <hirosh@dabui.de>
+ *
+ *  permission to use, copy, modify, and/or distribute this software for any
+ *  purpose with or without fee is hereby granted, provided that the above
+ *  copyright notice and this permission notice appear in all copies.
+ *
+ *  the software is provided "as is" and the author disclaims all warranties
+ *  with regard to this software including all implied warranties of
+ *  merchantability and fitness. in no event shall the author be liable for
+ *  any special, direct, indirect, or consequential damages or any damages
+ *  whatsoever resulting from loss of use, data or profits, whether in an
+ *  action of contract, negligence or other tortious action, arising out of
+ *  or in connection with the use or performance of this software.
+ *
+ */
+
+`ifndef KIANV_SOC
+`define KIANV_SOC
+
+`define CYCLE_BASED_SHIFTER
+`define CYCLE_CNT_ADDR 32'h 10_000_018
+
+`endif
