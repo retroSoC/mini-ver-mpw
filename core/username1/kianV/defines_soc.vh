@@ -21,6 +21,5 @@
 `define KIANV_SOC
 
 `define CYCLE_BASED_SHIFTER
-`define CYCLE_CNT_ADDR 32'h 10_000_018
 
 `endif
