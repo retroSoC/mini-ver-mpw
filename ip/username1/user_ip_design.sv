@@ -18,9 +18,12 @@
  * 3. archive 'userip' as `userip.zip` and upload `userip.zip` to cloud platform
  */
 
+// NOTE: opt include `mdd_config.svh`
+`include "mdd_config.svh"
+
 // NOTE: dont remove `ID` parameter and port defines
 module user_ip_design #(
-    parameter int ID = 8'd255
+    parameter [7:0] ID = 8'd255
 ) (
     // verilog_format: off
     input logic      clk_i,
@@ -77,7 +80,7 @@ module user_ip_design #(
   // NOTE: If needed, define io logic here.
   // `gpio_oen` is active low, meaning gpio is
   // output when `gpio_oen[x]` = 1'b0.
-  assign gpio.gpio_out = s_gpio_rev_q;
+  assign gpio.gpio_out = {`USER_GPIO_NUM{s_gpio_rev_q}};
   assign gpio.gpio_oen = '0;
   // ========== USER CUSTOM AREA END ==========
 

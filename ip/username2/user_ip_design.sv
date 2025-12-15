@@ -20,7 +20,7 @@
 
 // NOTE: dont remove `ID` parameter and port defines
 module user_ip_design #(
-    parameter int ID = 8'd255
+    parameter [7:0] ID = 8'd255
 ) (
     // verilog_format: off
     input logic      clk_i,
