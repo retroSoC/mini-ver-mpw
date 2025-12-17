@@ -1,3 +1,5 @@
+#!/bin/python
+
 import os
 import re
 import fnmatch
@@ -7,10 +9,8 @@ import common
 ROOT_PATH = os.getcwd()
 MPW_PATH = f'{ROOT_PATH}/rtl/mini/mpw'
 
-
 os.chdir(MPW_PATH)
-os.system('rm -rf .build')
-os.system('mkdir .build')
+os.system('rm -rf ./.build/ip')
 os.system('cp -rf ./ip ./.build/')
 
 os.chdir('./.build/ip')
