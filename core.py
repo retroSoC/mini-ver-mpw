@@ -59,4 +59,4 @@ with open('core.fl', 'w', encoding='utf-8') as fw:
                     # print(v)
                     fw.write(f'{current_dir}/{path.name}/{v}')
 
-                fw.write(f'+incdir+{current_dir}/{path.name}/kianV')
+                fw.write(f'+incdir+{current_dir}/{path.name}/kianV\n')
