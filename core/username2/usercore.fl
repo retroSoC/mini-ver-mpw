@@ -15,3 +15,4 @@
 ./kianV/riscv_defines.vh
 ./kianV/store_alignment.v
 ./kianV/store_decoder.v
++incdir+./kianV/
