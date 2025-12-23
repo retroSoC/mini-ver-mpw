@@ -1,6 +1,7 @@
 ./user_core_design.sv
 ./Hazard3/hdl/hazard3_core.v
 ./Hazard3/hdl/hazard3_cpu_1port.v
+./Hazard3/hdl/hazard3_cpu_2port.v
 ./Hazard3/hdl/arith/hazard3_alu.v
 ./Hazard3/hdl/arith/hazard3_branchcmp.v
 ./Hazard3/hdl/arith/hazard3_mul_fast.v
