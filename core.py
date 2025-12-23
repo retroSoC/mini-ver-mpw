@@ -48,7 +48,8 @@ with open('core.fl', 'w', encoding='utf-8') as fw:
     elif simu == 'VERILATOR':
         fw.write(f'{ROOT_PATH}/rtl/mini/core/picorv32_ver.v\n')
     for path in current_dir.iterdir():
-        if path.is_dir() and path.name != 'username2':
+        # if path.is_dir() and path.name != 'username2':
+        if path.is_dir():
             common.rename_modules_with_folder_suffix(path.name)
             with open(f'{path.name}/usercore.fl', 'r', encoding='utf-8') as fr:
                 for v in fr:
