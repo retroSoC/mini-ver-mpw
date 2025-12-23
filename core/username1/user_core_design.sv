@@ -33,18 +33,21 @@ module user_core_design #(
     // verilog_format: on
 );
 
+  logic [31:0] s_nmi_addr;
+  assign nmi.addr = {s_nmi_addr[31:2], 2'd0};
   kianv_harris_mc_edition #(
       .RESET_ADDR(`FLASH_START_ADDR),
-      .RV32E     (1'b1)
+      .RV32E     (1'b0)
   ) u_kianv_harris_mc_edition (
       .clk      (clk_i),
       .resetn   (rst_n_i),
       .mem_valid(nmi.valid),
       .mem_ready(nmi.ready),
       .mem_wstrb(nmi.wstrb),
-      .mem_addr (nmi.addr),
+      .mem_addr (s_nmi_addr),
       .mem_wdata(nmi.wdata),
       .mem_rdata(nmi.rdata),
       .PC       ()
   );
+
 endmodule
