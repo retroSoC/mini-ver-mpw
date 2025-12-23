@@ -33,18 +33,123 @@ module user_core_design #(
     // verilog_format: on
 );
 
-  kianv_harris_mc_edition #(
-      .RESET_ADDR(`FLASH_START_ADDR),
-      .RV32E     (1'b1)
-  ) u_kianv_harris_mc_edition (
-      .clk      (clk_i),
-      .resetn   (rst_n_i),
-      .mem_valid(nmi.valid),
-      .mem_ready(nmi.ready),
-      .mem_wstrb(nmi.wstrb),
-      .mem_addr (nmi.addr),
-      .mem_wdata(nmi.wdata),
-      .mem_rdata(nmi.rdata),
-      .PC       ()
+  wire s_pwrup_req;
+  // verilog_format: off
+  ahbl_if u_ahbl_if(clk_i, rst_n_i);
+  ahbl2nmi u_ahbl2nmi (u_ahbl_if, nmi);
+  // verilog_format: on
+
+  hazard3_cpu_1port #(
+      .RESET_VECTOR       (`FLASH_START_ADDR),
+      .MTVEC_INIT         (32'h0000_0000),
+      .EXTENSION_A        (1),
+      .EXTENSION_C        (1),
+      .EXTENSION_E        (0),
+      .EXTENSION_M        (1),
+      .EXTENSION_ZBA      (0),
+      .EXTENSION_ZBB      (0),
+      .EXTENSION_ZBC      (0),
+      .EXTENSION_ZBKB     (0),
+      .EXTENSION_ZBKX     (0),
+      .EXTENSION_ZBS      (0),
+      .EXTENSION_ZCB      (0),
+      .EXTENSION_ZCLSD    (0),
+      .EXTENSION_ZCMP     (0),
+      .EXTENSION_ZIFENCEI (0),
+      .EXTENSION_ZILSD    (0),
+      .EXTENSION_XH3BEXTM (0),
+      .EXTENSION_XH3IRQ   (0),
+      .EXTENSION_XH3PMPM  (0),
+      .EXTENSION_XH3POWER (0),
+      .CSR_M_MANDATORY    (1),
+      .CSR_M_TRAP         (1),
+      .CSR_COUNTER        (1),
+      .U_MODE             (0),
+      .PMP_REGIONS        (0),
+      .PMP_GRAIN          (0),
+      .PMP_MATCH_NAPOT    (1),
+      .PMP_MATCH_TOR      (0),
+      .PMP_HARDWIRED      ('0),
+      .PMP_HARDWIRED_ADDR ('0),
+      .PMP_HARDWIRED_CFG  ('0),
+      .DEBUG_SUPPORT      (0),
+      .BREAKPOINT_TRIGGERS(0),
+      .NUM_IRQS           (1),
+      .IRQ_PRIORITY_BITS  (0),
+      .IRQ_INPUT_BYPASS   ('0),
+      .MVENDORID_VAL      ('0),
+      .MCONFIGPTR_VAL     ('0),
+      .REDUCED_BYPASS     (0),
+      .MULDIV_UNROLL      (1),
+      .MUL_FAST           (1),
+      .MUL_FASTER         (1),
+      .MULH_FAST          (1),
+      .FAST_BRANCHCMP     (1),
+      .RESET_REGFILE      (1),
+      .BRANCH_PREDICTOR   (0),
+      .MTVEC_WMASK        ('1)
+  ) u_hazard3_cpu_1port (
+      // Global signals
+      .clk                       (clk_i),
+      .clk_always_on             (clk_i),
+      .rst_n                     (rst_n_i),
+      // Power control signals
+      .pwrup_req                 (s_pwrup_req),
+      .pwrup_ack                 (s_pwrup_req),          // tied back
+      .clk_en                    (),
+      .unblock_out               (),
+      .unblock_in                (1'b0),
+      // AHB5 Master port
+      .haddr                     (u_ahbl_if.haddr),
+      .hwrite                    (u_ahbl_if.hwrite),
+      .htrans                    (u_ahbl_if.htrans),
+      .hsize                     (u_ahbl_if.hsize),
+      .hburst                    (u_ahbl_if.hburst),
+      .hprot                     (u_ahbl_if.hprot),
+      .hmastlock                 (u_ahbl_if.hmastlock),
+      .hmaster                   (),
+      .hexcl                     (),
+      .hready                    (u_ahbl_if.hready),
+      .hresp                     (u_ahbl_if.hresp),
+      .hexokay                   (1'b1),
+      .hwdata                    (u_ahbl_if.hwdata),
+      .hrdata                    (u_ahbl_if.hrdata),
+      // Memory ordering signals
+      .fence_i_vld               (),
+      .fence_d_vld               (),
+      .fence_rdy                 (1'b1),
+      // Debugger run/halt control
+      .dbg_req_halt              (1'b0),
+      .dbg_req_halt_on_reset     (1'b0),
+      .dbg_req_resume            (1'b0),
+      .dbg_halted                (),
+      .dbg_running               (),
+      // Debugger access to data0 CSR
+      .dbg_data0_rdata           ('0),
+      .dbg_data0_wdata           (),
+      .dbg_data0_wen             (),
+      // Debugger instruction injection
+      .dbg_instr_data            ('0),
+      .dbg_instr_data_vld        ('0),
+      .dbg_instr_data_rdy        (),
+      .dbg_instr_caught_exception(),
+      .dbg_instr_caught_ebreak   (),
+      // Optional debug system bus access patch-through
+      .dbg_sbus_addr             ('0),
+      .dbg_sbus_write            ('0),
+      .dbg_sbus_size             ('0),
+      .dbg_sbus_vld              ('0),
+      .dbg_sbus_rdy              (),
+      .dbg_sbus_err              (),
+      .dbg_sbus_wdata            ('0),
+      .dbg_sbus_rdata            (),
+      // Identification CSR values
+      .mhartid_val               ('0),
+      .eco_version               ('0),
+      // Level-sensitive interrupt sources
+      .irq                       ('0),
+      .soft_irq                  ('0),
+      .timer_irq                 ('0)
   );
+
 endmodule
