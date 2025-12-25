@@ -12,8 +12,8 @@ if os.path.exists('Hazard3-main'):
     print('Hazard3 repo exist')
 else: os.system('git clone --recursive https://github.com/Wren6991/Hazard3.git Hazard3-main')
 
-if os.path.exists('core/username2/Hazard3'):
-    print('username2 repo exist')
+if os.path.exists('core/username3/Hazard3'):
+    print('username3 repo exist')
 else:
-    os.system('mkdir -p core/username2/Hazard3')
-    os.system('cp -rf Hazard3-main/hdl core/username2/Hazard3/')
+    os.system('mkdir -p core/username3/Hazard3')
+    os.system('cp -rf Hazard3-main/hdl core/username3/Hazard3/')
