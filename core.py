@@ -38,27 +38,33 @@ os.system('rm -rf ./.build/core')
 os.system('cp -rf ./core ./.build/')
 os.chdir('./.build/core')
 current_dir = Path.cwd()
-# for path in current_dir.iterdir():
-#     if path.is_dir():
-#         common.rename_modules_with_folder_suffix(path.name)
 
 with open('core.fl', 'w', encoding='utf-8') as fw:
     if simu == 'VCS':
         fw.write(f'{ROOT_PATH}/rtl/mini/core/picorv32.v\n')
     elif simu == 'VERILATOR':
         fw.write(f'{ROOT_PATH}/rtl/mini/core/picorv32_ver.v\n')
-    for path in current_dir.iterdir():
-        # if path.is_dir() and path.name != 'username2':
+
+    sorted_paths = sorted(current_dir.iterdir(), key=lambda p: p.name)
+    for path in sorted_paths:
+        print(path)
         if path.is_dir():
+            # rename all module
             common.rename_modules_with_folder_suffix(path.name)
             with open(f'{path.name}/usercore.fl', 'r', encoding='utf-8') as fr:
                 for v in fr:
-                    if 'user_core_design.sv' in v:
-                        v = f'./user_core_design_{path.name}.sv\n'
-                        os.system(f'mv {current_dir}/{path.name}/user_core_design.sv {current_dir}/{path.name}/user_core_design_{path.name}.sv')
                     # print(v)
                     if 'incdir' in v:
                         res = v.split('+')
-                        fw.write(f'+incdir+{current_dir}/{path.name}/{res[2]}')
+                        fw.write(f'+incdir+{current_dir}/{path.name}/{res[-1]}')
                     else:
-                        fw.write(f'{current_dir}/{path.name}/{v}')
+                        old_filename = v.split('/')[-1].rstrip('\n')
+                        new_filename = f'{old_filename.split(".")[0]}_{path.name}.{old_filename.split(".")[1]}'
+
+                        old_filepath = f'{os.path.dirname(v)}/{old_filename}'
+                        new_filepath = f'{os.path.dirname(v)}/{new_filename}'
+                        # mv
+                        os.system(f'mv {current_dir}/{path.name}/{old_filepath} {current_dir}/{path.name}/{new_filepath}')
+                        # print(f'file: {current_dir}/{path.name}/{new_filepath}')
+                        fw.write(f'{current_dir}/{path.name}/{new_filepath}\n')
+            fw.write('\n')
