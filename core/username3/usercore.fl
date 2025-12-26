@@ -1,4 +1,12 @@
 ./user_core_design.sv
+./Hazard3/hdl/hazard3_config_inst.vh
+./Hazard3/hdl/hazard3_config.vh
+./Hazard3/hdl/hazard3_csr_addr.vh
+./Hazard3/hdl/hazard3_ops.vh
+./Hazard3/hdl/hazard3_rvfi_monitor.vh
+./Hazard3/hdl/hazard3_rvfi_standalone_defs.vh
+./Hazard3/hdl/hazard3_width_const.vh
+./Hazard3/hdl/rv_opcodes.vh
 ./Hazard3/hdl/hazard3_core.v
 ./Hazard3/hdl/hazard3_cpu_1port.v
 ./Hazard3/hdl/hazard3_cpu_2port.v
