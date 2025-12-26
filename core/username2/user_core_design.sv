@@ -50,8 +50,8 @@ module user_core_design #(
       .mem_rdata   (nmi.rdata),
       .PC          (),
       .access_fault(1'b0),
-      .IRQ3(1'b0),
-      .IRQ7(1'b0)
+      .IRQ3        (irq_i[1]),
+      .IRQ7        (irq_i[0])
   );
 
 endmodule
