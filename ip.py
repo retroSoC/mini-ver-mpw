@@ -17,7 +17,7 @@ os.chdir('./.build/ip')
 current_dir = Path.cwd()
 for path in current_dir.iterdir():
     if path.is_dir():
-        common.rename_modules_with_folder_suffix(path.name)
+        common.rename_contents_with_folder_suffix(path.name)
 
 with open('ip.fl', 'w', encoding='utf-8') as fw:
     for path in current_dir.iterdir():

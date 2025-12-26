@@ -7,6 +7,7 @@ import fnmatch
 from pathlib import Path
 import common
 
+ban_list = ['hazard3_config', 'hazard3_config_inst', 'hazard3_rvfi_monitor', 'hazard3_rvfi_standalone_defs', 'hazard3_width_const']
 
 ROOT_PATH = os.getcwd()
 MPW_PATH = f'{ROOT_PATH}/rtl/mini/mpw'
@@ -50,7 +51,7 @@ with open('core.fl', 'w', encoding='utf-8') as fw:
         print(path)
         if path.is_dir():
             # rename all module
-            common.rename_modules_with_folder_suffix(path.name)
+            common.rename_contents_with_folder_suffix(path.name)
             with open(f'{path.name}/usercore.fl', 'r', encoding='utf-8') as fr:
                 for v in fr:
                     # print(v)
@@ -66,5 +67,12 @@ with open('core.fl', 'w', encoding='utf-8') as fw:
                         # mv
                         os.system(f'mv {current_dir}/{path.name}/{old_filepath} {current_dir}/{path.name}/{new_filepath}')
                         # print(f'file: {current_dir}/{path.name}/{new_filepath}')
-                        fw.write(f'{current_dir}/{path.name}/{new_filepath}\n')
+                        is_ban = False
+                        for v in ban_list:
+                            if v in new_filename:
+                                is_ban = True
+                                break
+
+                        if is_ban is False:
+                            fw.write(f'{current_dir}/{path.name}/{new_filepath}\n')
             fw.write('\n')
