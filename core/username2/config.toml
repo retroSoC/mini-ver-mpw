@@ -1,0 +1,4 @@
+name = "KianV"
+isa = "rv32ima"
+maintainer = "splinedrive"
+repo = "https://github.com/splinedrive/KianV-RV32IMA-RISC-V-uLinux-SoC"

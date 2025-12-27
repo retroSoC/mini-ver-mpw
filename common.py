@@ -119,6 +119,10 @@ def process_files(folder_path):
             filepath = os.path.join(root, filename)
             print(f"Processing file: {filepath}")
 
+            if filename == 'serv_state.v':
+                cmd = f"sed -i '223,224s/^/\/\//;96r /dev/stdin' {filepath} < <(sed -n '223,224p' {filepath})"
+                os.system('bash -c "' + cmd.replace('"', '\\"') + '"')
+
             with open(filepath, 'r', encoding='utf-8') as f:
                 content = f.read()
 

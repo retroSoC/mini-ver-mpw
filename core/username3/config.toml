@@ -1,0 +1,4 @@
+name = "Hazard3"
+isa = "rv32imaczb*"
+maintainer = "Wren6991"
+repo = "https://github.com/Wren6991/Hazard3"

@@ -1,0 +1,4 @@
+name = "serv"
+isa = "rv32i"
+maintainer = "olofk"
+repo = "https://github.com/olofk/serv"

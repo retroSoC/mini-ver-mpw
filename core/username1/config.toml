@@ -1,0 +1,4 @@
+name = "KianV"
+isa = "rv32i"
+maintainer = "splinedrive"
+repo = "https://github.com/splinedrive/RISCV-KianV-BareMetalStyle"

@@ -1,0 +1,4 @@
+name = "tinyGPIO"
+isa = "none"
+maintainer = "maksyuki"
+repo = "https://github.com/maksyuki"
