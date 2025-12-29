@@ -1,0 +1,4 @@
+name = "DarkRISCV"
+isa = "rv32i"
+maintainer = "samsoniuk"
+repo = "https://github.com/darklife/darkriscv"

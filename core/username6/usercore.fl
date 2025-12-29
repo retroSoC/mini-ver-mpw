@@ -1,0 +1,4 @@
+./user_core_design.sv
+./darkriscv.v
+./config.vh
++incdir+./
