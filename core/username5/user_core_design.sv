@@ -42,7 +42,7 @@ module user_core_design #(
       .mem_rdata(nmi.rdata),
       .mem_rstrb(),
       .mem_rbusy('0),
-      .mem_wbusy('0),
+      .mem_wbusy('0)
   );
 
 endmodule
