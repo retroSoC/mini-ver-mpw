@@ -33,16 +33,22 @@ module user_core_design #(
     // verilog_format: on
 );
 
+  logic [3:0] s_mem_wmask;
+  logic       s_mem_rstrb;
+
+  assign nmi.valid = s_mem_rstrb || (|s_mem_wmask);
+  assign nmi.wstrb = s_mem_rstrb ? '0 : s_mem_wmask;
+
   FemtoRV32 u_FemtoRV32 (
       .clk      (clk_i),
-      .reset    (~rst_n_i),
+      .reset    (rst_n_i),
       .mem_addr (nmi.addr),
       .mem_wdata(nmi.wdata),
-      .mem_wmask(nmi.wstrb),
+      .mem_wmask(s_mem_wmask),
       .mem_rdata(nmi.rdata),
-      .mem_rstrb(),
-      .mem_rbusy('0),
-      .mem_wbusy('0)
+      .mem_rstrb(s_mem_rstrb),
+      .mem_rbusy(nmi.ready),
+      .mem_wbusy(nmi.ready)
   );
 
 endmodule
