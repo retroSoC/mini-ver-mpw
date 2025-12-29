@@ -32,4 +32,4 @@ if os.path.exists('core/username4/serv'):
     print('username4 repo exist')
 else:
     os.system('mkdir -p core/username4/serv')
-    os.system('cp -rf serv-1.4.0/rtl core/username4/serv/')
+    os.system('cp -rf serv-1.4.0/rtl/* core/username4/serv/')
