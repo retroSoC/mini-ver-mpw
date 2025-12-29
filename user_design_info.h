@@ -9,12 +9,10 @@ typedef struct {
 } design_info;
 
 const design_info user_core_info[] = {
-    {"name", "isa", "maintainer", "repo"},
-    {"PicoRV32", "rv32imc", "YosysHQ", "https://github.com/YosysHQ/picorv32"},
+    {"PicoRV32(Host)", "rv32imc", "YosysHQ", "https://github.com/YosysHQ/picorv32"},
 };
 
 const design_info user_ip_info[] = {
-    {"name", "isa", "maintainer", "repo"},
     {"archinfo", "none", "maksyuki", "https://github.com/retroSoC/archinfo"},
 };
 

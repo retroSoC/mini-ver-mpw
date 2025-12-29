@@ -1,0 +1,4 @@
+name = "FemtoRV32"
+isa = "rv32i"
+maintainer = "BrunoLevy"
+repo = "https://github.com/BrunoLevy/learn-fpga/blob/master/FemtoRV/RTL/PROCESSOR/femtorv32_tachyon.v"
