@@ -23,7 +23,7 @@ def add_design_info(path, design_type):
                 res = tomli.load(f)
             info.append(res)
 
-    print(f'info: {info}')
+    # print(f'info: {info}')
 
     tmp_content = ''
     is_find_first = True
@@ -31,7 +31,7 @@ def add_design_info(path, design_type):
     with open(f'{MPW_PATH}/.build/user_design_info.h', 'r', encoding='utf-8') as fp:
             tmp_content = fp.readlines()
 
-    print(f'tmp_content: {tmp_content}')
+    # print(f'tmp_content: {tmp_content}')
     for idx, val in enumerate(tmp_content):
         target = 'none'
         if design_type == 'CORE':
@@ -47,6 +47,8 @@ def add_design_info(path, design_type):
 
     with open(f'{MPW_PATH}/.build/user_design_info.h', 'w', encoding='utf-8') as fp:
         fp.writelines(tmp_content)
+    print('')
+
 
 if len(sys.argv) < 2:
     print('example: python3 info.py CORE')
