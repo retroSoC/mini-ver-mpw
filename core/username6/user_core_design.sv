@@ -33,25 +33,36 @@ module user_core_design #(
     // verilog_format: on
 );
 
-  darkriscv u_darkriscv (
-      .CLK  (clk_i),             // clock
-      .RES  (~rst_n_i),          // reset
-      .IDATA(s_cpu_inst_data),   // instruction data bus
-      .IADDR(s_cpu_inst_addr),   // instruction addr bus
-      .IDREQ(s_cpu_inst_req),    // instruction req
-      .IDACK(s_cpu_inst_ack),    // instruction ack
-      .DATAI(s_cpu_data_rdata),  // data bus (input)
-      .DATAO(s_cpu_data_wdata),  // data bus (output)
-      .DADDR(s_cpu_data_addr),   // addr bus
-      .DLEN (),                  // data length
-      .DBE  (s_cpu_data_wstrb),  // data byte enable
-      .DRW  (),                  // data read/write
-      .DRD  (s_cpu_data_rd),     // data read
-      .DWR  (s_cpu_data_wr),     // data write
-      .DDREQ(s_cpu_data_req),    // data req
-      .DDACK(s_cpu_data_ack),    // data ack
-      .BERR ('0),                // bus error
-      .DEBUG()                   // old-school osciloscope based debug! :)
+  logic        s_cpu_wr;
+  logic        s_cpu_rd;
+  logic [ 3:0] s_cpu_be;
+  logic [31:0] s_cpu_rdata;
+  logic [31:0] s_cpu_rdata_d, s_cpu_rdata_q;
+
+  assign nmi.wstrb = s_cpu_wr ? s_cpu_be : '0;
+  darkbridge u_darkbridge (
+      .CLK   (clk_i),
+      .RES   (~rst_n_i),
+      .HLT   (),
+      // x-bus
+      .XXDREQ(nmi.valid),
+      .XXWR  (s_cpu_wr),
+      .XXRD  (s_cpu_rd),
+      .XXBE  (s_cpu_be),
+      .XXADDR(nmi.addr),
+      .XXATAO(nmi.wdata),
+      .XXATAI(s_cpu_rdata),
+      .XXDACK(nmi.ready),
+      .DEBUG ()
   );
 
+  assign s_cpu_rdata   = (nmi.valid && s_cpu_rd && nmi.ready) ? nmi.rdata : s_cpu_rdata_q;
+  assign s_cpu_rdata_d = nmi.rdata;
+  dffer #(32) u_cpu_rdata_dffer (
+      clk_i,
+      rst_n_i,
+      nmi.valid && s_cpu_rd && nmi.ready,
+      s_cpu_rdata_d,
+      s_cpu_rdata_q
+  );
 endmodule

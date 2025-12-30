@@ -17,7 +17,7 @@ if os.path.exists('core/username3/Hazard3'):
     print('username3 repo exist')
 else:
     os.system('mkdir -p core/username3/Hazard3')
-    os.system('cp -rf Hazard3-main/hdl core/username3/Hazard3/')
+    os.system('cp -rf Hazard3-main/hdl/* core/username3/Hazard3/')
 
 
 if os.path.exists('serv-1.4.0.tar.gz'):

@@ -1,4 +1,5 @@
 ./user_core_design.sv
 ./darkriscv.v
+./darkbridge.v
 ./config.vh
 +incdir+./
