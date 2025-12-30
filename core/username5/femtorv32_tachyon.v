@@ -129,7 +129,11 @@ module FemtoRV32(
    reg [31:0] registerFile [31:0];
 
    always @(posedge clk) begin
-     if (writeBack)
+      if (!reset) begin
+         integer i;
+         for(i = 0; i < 32; ++i) registerFile[i] <= 32'd0;
+      end
+     else if (writeBack)
        if (rdId != 0)
          registerFile[rdId] <= writeBackData;
    end
@@ -173,6 +177,11 @@ module FemtoRV32(
    wire funct3IsShift = funct3Is[1] | funct3Is[5];
 
    always @(posedge clk) begin
+      if(!reset) begin
+         aluShamt <= 5'd0;
+         aluReg <= 32'd0;
+      end
+      else begin
       if(aluWr) begin
 	 aluShamt <= funct3IsShift ? aluIn2[4:0] : 5'b0;
 	 aluReg <=
@@ -202,6 +211,7 @@ module FemtoRV32(
 	 aluReg <= funct3Is[1] ? aluReg << 1 :              // SLL
 		   {instr[30] & aluReg[31], aluReg[31:1]};  // SRA,SRL
       end
+   end
    end
 
    /***************************************************************************/
@@ -396,7 +406,10 @@ module FemtoRV32(
    /***************************************************************************/
    // Cycle counter
    /***************************************************************************/
-   always @(posedge clk) cycles <= cycles + 1;
+   always @(posedge clk) begin
+      if(~reset) cycles <= 32'd0;
+      else cycles <= cycles + 1;
+   end
 
 endmodule
 
