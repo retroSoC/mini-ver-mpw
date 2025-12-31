@@ -1,0 +1,4 @@
+name = "Ibex"
+isa = "rv32imc"
+maintainer = "lowRISC"
+repo = "https://github.com/lowRISC/ibex"
