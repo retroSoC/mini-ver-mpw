@@ -80,8 +80,11 @@ module user_ip_design #(
   // NOTE: If needed, define io logic here.
   // `gpio_oe` is active high, meaning gpio is
   // output when `gpio_oe[x]` = 1'b1.
+  assign gpio.gpio_oe  = '1;
+  assign gpio.gpio_cs  = '1;  // 1: CMOS 0: SCHMI
+  assign gpio.gpio_pu  = '0;
+  assign gpio.gpio_pd  = '0;
   assign gpio.gpio_out = {`USER_GPIO_NUM{s_gpio_rev_q}};
-  assign gpio.gpio_oe = '0;
   // ========== USER CUSTOM AREA END ==========
 
   // ====== INSTANCE USER CUSTOM TOP DESIGN HERE ======
