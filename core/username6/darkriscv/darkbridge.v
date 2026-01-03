@@ -121,6 +121,7 @@ module darkbridge
         .DADDR  (DADDR),
         .DATAI  (DATAI),
         .DATAO  (DATAO),
+        .DLEN   (),
         .DBE    (DBE),
         .DRW    (DRW),
         .DWR    (DWR),

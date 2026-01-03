@@ -18,6 +18,9 @@ def add_design_info(path, design_type):
     current_dir = Path.cwd()
     sorted_paths = sorted(current_dir.iterdir(), key=lambda p: p.name)
     for path in sorted_paths:
+        if 'username7' in path.name:
+            continue
+
         if path.is_dir():
             with open(f'{path}/config.toml', 'rb') as f:
                 res = tomli.load(f)

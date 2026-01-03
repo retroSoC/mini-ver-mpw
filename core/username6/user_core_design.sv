@@ -36,10 +36,13 @@ module user_core_design #(
   logic        s_cpu_wr;
   logic        s_cpu_rd;
   logic [ 3:0] s_cpu_be;
+  logic [31:0] s_cpu_addr;
   logic [31:0] s_cpu_rdata;
+  logic        s_cpu_rdata_en;
   logic [31:0] s_cpu_rdata_d, s_cpu_rdata_q;
 
   assign nmi.wstrb = s_cpu_wr ? s_cpu_be : '0;
+  assign nmi.addr  = {s_cpu_addr[31:2], 2'b0};
   darkbridge u_darkbridge (
       .CLK   (clk_i),
       .RES   (~rst_n_i),
@@ -49,19 +52,20 @@ module user_core_design #(
       .XXWR  (s_cpu_wr),
       .XXRD  (s_cpu_rd),
       .XXBE  (s_cpu_be),
-      .XXADDR(nmi.addr),
+      .XXADDR(s_cpu_addr),
       .XXATAO(nmi.wdata),
       .XXATAI(s_cpu_rdata),
       .XXDACK(nmi.ready),
       .DEBUG ()
   );
 
-  assign s_cpu_rdata   = (nmi.valid && s_cpu_rd && nmi.ready) ? nmi.rdata : s_cpu_rdata_q;
-  assign s_cpu_rdata_d = nmi.rdata;
+  assign s_cpu_rdata    = s_cpu_rdata_en ? nmi.rdata : s_cpu_rdata_q;
+  assign s_cpu_rdata_en = nmi.valid && s_cpu_rd && nmi.ready;
+  assign s_cpu_rdata_d  = nmi.rdata;
   dffer #(32) u_cpu_rdata_dffer (
       clk_i,
       rst_n_i,
-      nmi.valid && s_cpu_rd && nmi.ready,
+      s_cpu_rdata_en,
       s_cpu_rdata_d,
       s_cpu_rdata_q
   );
