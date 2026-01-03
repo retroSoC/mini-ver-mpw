@@ -49,6 +49,8 @@ with open('core.fl', 'w', encoding='utf-8') as fw:
     sorted_paths = sorted(current_dir.iterdir(), key=lambda p: p.name)
     for path in sorted_paths:
         print(path)
+        if 'username7' in path.name:
+            continue
         if path.is_dir():
             # rename all module
             common.rename_contents_with_folder_suffix(path.name)

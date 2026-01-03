@@ -10,6 +10,8 @@ module_mapping = {}
 include_mapping = {}
 define_mapping = {}
 
+disable_list = ['logic', 'assign', 'for']
+
 def rename_contents_with_folder_suffix(folder_path):
     """
     Recursively process all Verilog/SystemVerilog files in the specified folder, 
@@ -37,6 +39,13 @@ def rename_contents_with_folder_suffix(folder_path):
     process_files(folder_path)
 
 
+def check_disable_list(name):
+    for vv in disable_list:
+        if name in vv:
+            return False
+    return True
+
+
 def collect_content(folder_path, suffix):
     """Collect all content definitions and create mapping relationships"""
 
@@ -62,8 +71,9 @@ def collect_content(folder_path, suffix):
                     # print(f'module_mapping: {module_mapping}')
                     # sys.exit(1)
                 else:
-                    module_mapping[name] = new_name
-                    print(f"Detected module: {name} -> {new_name}")
+                    if check_disable_list(name):
+                        module_mapping[name] = new_name
+                        print(f"Detected module: {name} -> {new_name}")
 
 
             # Find all include names
@@ -81,8 +91,9 @@ def collect_content(folder_path, suffix):
                     # print(f'include_mapping: {include_mapping}')
                     # sys.exit(1)
                 else:
-                    include_mapping[name] = new_name
-                    print(f"Detected include: {name} -> {new_name}")
+                    if check_disable_list(name):
+                        include_mapping[name] = new_name
+                        print(f"Detected include: {name} -> {new_name}")
 
 
             # Find all define names
@@ -97,8 +108,9 @@ def collect_content(folder_path, suffix):
                     # print(f'define_mapping: {define_mapping}')
                     # sys.exit(1)
                 else:
-                    define_mapping[name] = new_name
-                    print(f"Detected define: {name} -> {new_name}")
+                    if check_disable_list(name):
+                        define_mapping[name] = new_name
+                        print(f"Detected define: {name} -> {new_name}")
 
             print('\n')
 

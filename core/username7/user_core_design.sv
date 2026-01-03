@@ -33,87 +33,88 @@ module user_core_design #(
     // verilog_format: on
 );
 
-  logic s_mem_rstrb;
-  logic s_mem_rstrb_re, s_mem_wmask_re;
-  logic [31:0] s_mem_addr;
-  logic [3:0] s_mem_wmask_d, s_mem_wmask_q;
-  logic [3:0] s_mem_wmask;
-  logic [31:0] s_mem_rdata_d, s_mem_rdata_q;
-  logic [1:0] s_mem_req_d, s_mem_req_q;
-
-
-  assign nmi.valid = |s_mem_req_q;
-  assign nmi.addr  = {s_mem_addr[31:2], 2'b00};
-  always_comb begin
-    nmi.wstrb = '0;
-    if (s_mem_wmask_re) nmi.wstrb = s_mem_wmask;
-    else if (s_mem_req_q == 2'd2) nmi.wstrb = s_mem_wmask_q;
-  end
-
-
-  edge_det_sync_re #(1) u_mem_rstrb_edge_det_sync_re (
-      clk_i,
-      rst_n_i,
-      s_mem_rstrb,
-      s_mem_rstrb_re
-  );
-
-  edge_det_sync_re #(1) u_mem_wmask_edge_det_sync_re (
-      clk_i,
-      rst_n_i,
-      |s_mem_wmask,
-      s_mem_wmask_re
-  );
-
-
-  // 0: idle 1: rd 2: wr
-  always_comb begin
-    s_mem_req_d = s_mem_req_q;
-    if (s_mem_rstrb_re) s_mem_req_d = 2'd1;
-    else if (s_mem_wmask_re) s_mem_req_d = 2'd2;
-    else if ((|s_mem_req_q) && nmi.ready) s_mem_req_d = 2'd0;
-  end
-  dffr #(2) u_mem_req_dffr (
-      clk_i,
-      rst_n_i,
-      s_mem_req_d,
-      s_mem_req_q
-  );
-
-
-  assign s_mem_rdata_d = nmi.rdata;
-  dffer #(32) u_mem_rdata_dffer (
-      clk_i,
-      rst_n_i,
-      s_mem_req_q == 2'd1 && nmi.ready,
-      s_mem_rdata_d,
-      s_mem_rdata_q
-  );
-
-
-  assign s_mem_wmask_d = s_mem_wmask;
-  dffer #(4) u_mem_mask_dffer (
-      clk_i,
-      rst_n_i,
-      s_mem_wmask_re,
-      s_mem_wmask_d,
-      s_mem_wmask_q
-  );
-
-
-  FemtoRV32 #(
-      .RESET_ADDR(`FLASH_START_ADDR),
-      .ADDR_WIDTH(32)
-  ) u_FemtoRV32 (
-      .clk      (clk_i),
-      .reset    (rst_n_i),
-      .mem_addr (s_mem_addr),
-      .mem_wdata(nmi.wdata),
-      .mem_wmask(s_mem_wmask),
-      .mem_rdata(s_mem_rdata_q),
-      .mem_rstrb(s_mem_rstrb),
-      .mem_rbusy(nmi.valid),
-      .mem_wbusy(nmi.valid)
+  ibex_top #(
+      .PMPEnable       (0),
+      .PMPGranularity  (0),
+      .PMPNumRegions   (4),
+      .MHPMCounterNum  (0),
+      .MHPMCounterWidth(40),
+      .RV32E           (0),
+      .RV32M           (ibex_pkg::RV32MSingleCycle),
+      .RV32B           (ibex_pkg::RV32BNone),
+      .RV32ZC          (ibex_pkg::RV32ZcaZcbZcmp),
+      .RegFile         (ibex_pkg::RegFileFF),
+      .BranchTargetALU (1),
+      .WritebackStage  (1),
+      .ICache          (0),
+      .ICacheECC       (0),
+      .ICacheScramble  (0),
+      .BranchPrediction(0),
+      .SecureIbex      (0),
+      .RndCnstLfsrSeed (ibex_pkg::RndCnstLfsrSeedDefault),
+      .RndCnstLfsrPerm (ibex_pkg::RndCnstLfsrPermDefault),
+      .DbgTriggerEn    (0),
+      .DmBaseAddr      (32'h1A110000),
+      .DmAddrMask      (32'h00000FFF),
+      .DmHaltAddr      (32'h1A110800),
+      .DmExceptionAddr (32'h1A110808)
+  ) u_ibex_top (
+      // Clock and reset
+      .clk_i                    (clk_i),
+      .rst_ni                   (rst_n_i),
+      // enable all clock gates for testing
+      .test_en_i                (1'b0),
+      .ram_cfg_icache_tag_i     ('0),
+      .ram_cfg_rsp_icache_tag_o (),
+      .ram_cfg_icache_data_i    ('0),
+      .ram_cfg_rsp_icache_data_o(),
+      // Configuration
+      .hart_id_i                ('0),
+      .boot_addr_i              (`FLASH_START_ADDR - 32'h80),  // refer to TRM.
+      // Instruction memory interface
+      .instr_req_o              (),
+      .instr_gnt_i              ('0),
+      .instr_rvalid_i           ('0),
+      .instr_addr_o             (),
+      .instr_rdata_i            ('0),
+      .instr_rdata_intg_i       ('0),
+      .instr_err_i              ('0),
+      // Data memory interface
+      .data_req_o               (),
+      .data_gnt_i               ('0),
+      .data_rvalid_i            ('0),
+      .data_we_o                (),
+      .data_be_o                (),
+      .data_addr_o              (),
+      .data_wdata_o             (),
+      .data_wdata_intg_o        (),
+      .data_rdata_i             ('0),
+      .data_rdata_intg_i        ('0),
+      .data_err_i               ('0),
+      // Interrupt inputs
+      .irq_software_i           (irq_i[1]),
+      .irq_timer_i              (irq_i[0]),
+      .irq_external_i           ('0),
+      .irq_fast_i               ('0),
+      // non-maskeable interrupt
+      .irq_nm_i                 ('0),
+      // Scrambling Interface
+      .scramble_key_valid_i     ('0),
+      .scramble_key_i           ('0),
+      .scramble_nonce_i         ('0),
+      .scramble_req_o           (),
+      // Debug interface
+      .debug_req_i              ('0),
+      .crash_dump_o             (),
+      .double_fault_seen_o      (),
+      // Special control signals
+      .fetch_enable_i           (1'b1),
+      .alert_minor_o            (),
+      .alert_major_internal_o   (),
+      .alert_major_bus_o        (),
+      .core_sleep_o             (),
+      // DFT bypass controls
+      .scan_rst_ni              (1'b1)
   );
 
 endmodule
