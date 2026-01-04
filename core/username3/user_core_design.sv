@@ -148,8 +148,8 @@ module user_core_design #(
       .eco_version               ('0),
       // Level-sensitive interrupt sources
       .irq                       ('0),
-      .soft_irq                  ('0),
-      .timer_irq                 ('0)
+      .soft_irq                  (irq_i[0]),
+      .timer_irq                 (irq_i[1])
   );
 
 endmodule

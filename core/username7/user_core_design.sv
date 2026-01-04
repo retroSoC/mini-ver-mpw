@@ -92,8 +92,8 @@ module user_core_design #(
       .data_rdata_intg_i        ('0),
       .data_err_i               ('0),
       // Interrupt inputs
-      .irq_software_i           (irq_i[1]),
-      .irq_timer_i              (irq_i[0]),
+      .irq_software_i           (irq_i[0]),
+      .irq_timer_i              (irq_i[1]),
       .irq_external_i           ('0),
       .irq_fast_i               ('0),
       // non-maskeable interrupt

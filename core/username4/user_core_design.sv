@@ -87,7 +87,7 @@ module user_core_design #(
   ) u_serv_rf_top (
       .clk         (clk_i),
       .i_rst       (~s_core_rst_n_sync),
-      .i_timer_irq (irq_i[0]),
+      .i_timer_irq (irq_i[1]),
       // Bus
       .o_ibus_adr  (s_wb_ibus_adr),
       .o_ibus_cyc  (s_wb_ibus_stb),
