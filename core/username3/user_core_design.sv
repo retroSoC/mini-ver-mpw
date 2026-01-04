@@ -75,7 +75,7 @@ module user_core_design #(
       .DEBUG_SUPPORT      (0),
       .BREAKPOINT_TRIGGERS(0),
       .NUM_IRQS           (30),
-      .IRQ_PRIORITY_BITS  (0),
+      .IRQ_PRIORITY_BITS  (2),
       .IRQ_INPUT_BYPASS   (30'h0),
       .MVENDORID_VAL      (32'h0),
       .MCONFIGPTR_VAL     (32'h0),
