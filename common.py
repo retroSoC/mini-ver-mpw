@@ -10,7 +10,7 @@ module_mapping = {}
 include_mapping = {}
 define_mapping = {}
 
-disable_list = ['logic', 'assign', 'for']
+disable_list = ['logic', 'assign', 'for', 'of']
 
 def rename_contents_with_folder_suffix(folder_path):
     """

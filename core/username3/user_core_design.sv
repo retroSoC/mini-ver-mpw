@@ -69,16 +69,16 @@ module user_core_design #(
       .PMP_GRAIN          (0),
       .PMP_MATCH_NAPOT    (1),
       .PMP_MATCH_TOR      (0),
-      .PMP_HARDWIRED      ('0),
-      .PMP_HARDWIRED_ADDR ('0),
-      .PMP_HARDWIRED_CFG  ('0),
+      .PMP_HARDWIRED      (0),
+      .PMP_HARDWIRED_ADDR (0),
+      .PMP_HARDWIRED_CFG  (0),
       .DEBUG_SUPPORT      (0),
       .BREAKPOINT_TRIGGERS(0),
       .NUM_IRQS           (30),
       .IRQ_PRIORITY_BITS  (0),
-      .IRQ_INPUT_BYPASS   ('0),
-      .MVENDORID_VAL      ('0),
-      .MCONFIGPTR_VAL     ('0),
+      .IRQ_INPUT_BYPASS   (30'h0),
+      .MVENDORID_VAL      (32'h0),
+      .MCONFIGPTR_VAL     (32'h0),
       .REDUCED_BYPASS     (0),
       .MULDIV_UNROLL      (1),
       .MUL_FAST           (1),
@@ -87,7 +87,7 @@ module user_core_design #(
       .FAST_BRANCHCMP     (1),
       .RESET_REGFILE      (1),
       .BRANCH_PREDICTOR   (0),
-      .MTVEC_WMASK        ('1)
+      .MTVEC_WMASK        (32'hfffffffd)
   ) u_hazard3_cpu_1port (
       // Global signals
       .clk                       (clk_i),
