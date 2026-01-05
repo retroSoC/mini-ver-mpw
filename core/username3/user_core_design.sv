@@ -33,7 +33,7 @@ module user_core_design #(
     // verilog_format: on
 );
 
-  wire s_pwrup_req;
+  logic s_pwrup_req;
   // verilog_format: off
   ahbl_if u_ahbl_if (clk_i, rst_n_i);
   ahbl2nmi u_ahbl2nmi (u_ahbl_if, nmi);
