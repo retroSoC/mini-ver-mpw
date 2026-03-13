@@ -60,7 +60,7 @@ module user_core_design #(
 
 
   serv_rf_top #(
-      .RESET_PC      (`FLASH_START_ADDR),
+      .RESET_PC      (`CPU_RESET_ADDR),
       /*  COMPRESSED=1: Enable the compressed decoder and allowed misaligned jump of pc
         COMPRESSED=0: Disable the compressed decoder and does not allow the misaligned jump of pc
     */

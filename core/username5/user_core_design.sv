@@ -102,7 +102,7 @@ module user_core_design #(
 
 
   FemtoRV32 #(
-      .RESET_ADDR(`FLASH_START_ADDR),
+      .RESET_ADDR(`CPU_RESET_ADDR),
       .ADDR_WIDTH(32)
   ) u_FemtoRV32 (
       .clk      (clk_i),

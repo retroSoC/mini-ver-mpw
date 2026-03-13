@@ -70,7 +70,7 @@ module user_core_design #(
       .ram_cfg_rsp_icache_data_o(),
       // Configuration
       .hart_id_i                ('0),
-      .boot_addr_i              (`FLASH_START_ADDR - 32'h80),  // refer to TRM.
+      .boot_addr_i              (`CPU_RESET_ADDR - 32'h80),  // refer to TRM.
       // Instruction memory interface
       .instr_req_o              (),
       .instr_gnt_i              ('0),
